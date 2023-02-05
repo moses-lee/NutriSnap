@@ -75,7 +75,7 @@
                 }
 
                 localStorage.setItem("encoded64", encoded);
-                window.location.href = "results.html";
+                setTimeout(() => { window.location.href = "results.html"; }, 1500);
             };
             return reader.onerror = function (error) {
                 console.log('Error: ', error);
