@@ -3,3 +3,7 @@ body {
 	font-family: FreeMono, sans-serif;
 	font-weight: 200; 
 }
+.logo {
+	width: 150px;
+	height: 150px;
+}
