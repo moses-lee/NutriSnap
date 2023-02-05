@@ -26,5 +26,13 @@
 		Filler stuff filler stuff filler words.
 		Yea yea yea. 
 	</p>
+    <script src="key.js"></script>
+    <script src="predict.js"></script>
+	<string>
+		localStorage.getItem("encoded64", encoded);
+		get(encoded).then(res => {
+			console.log(res.outputs[0].data.concepts);
+		})
+	</string>
 </body>
 </html>
