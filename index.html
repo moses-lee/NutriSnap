@@ -2,6 +2,7 @@
 <html>
     <head>
         <link rel="stylesheet" href="main.css">
+        <link rel="script" href="main.css">
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>NutriSnap</title>
@@ -47,10 +48,18 @@
             Snap a pic of your food!
         </p>
         <div id="uploadBox">
-            <input type="file" name="fileUpload">file here</input>
-            <button id="uploadButton" onclick="window.open('results.html')">
-                Upload
-            </button>
+            <input id = "input" type="file" name="fileUpload">Upload Image</input>
         </div>
+
+        <script src="predict.js"></script>
+        <script>
+            // When the user uploads a file, save it in "picture". 
+            const inputElement = document.getElementById("input");
+            inputElement.addEventListener("change", handleFiles, false);
+            function handleFiles() {
+                const picture = this.files[0];
+                console.log(document.getElementById('input').value); // DEBUG - print name of file
+            }
+        </script>
     </body>
 </html>
