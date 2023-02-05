@@ -11,7 +11,7 @@
 			padding-left: 400px;
 			padding-top: 40px;
 			position: relative;
-			font-weight: 200; 
+			font-weight: 200;
 		}
 
 		body {
@@ -62,7 +62,7 @@
 			/*background-color: #006202;*/
 			background-color: #C9ADA1;
 			/*background-color: #494A46;*/
-			color:	white;
+			color: white;
 			text-align: center;
 			vertical-align: middle;
 			border-radius: 25px;
@@ -145,7 +145,15 @@
 
 			}
 
-			for (const element in healthData) {
+			for (const element in categorySplit) {
+				if (healthData[element] == undefined && element !== "snacks") {
+					let newDiv = document.createElement('div');
+					newDiv.className = "subAttribute";
+					let msg = "You can eat <b>more</b> of <b>" + element + ".</b>";
+					newDiv.innerHTML = "<p class='text'>" + msg + "</p>";
+					healthHeader.appendChild(newDiv);
+					continue;
+				}
 				const currPercentage = healthData[element].total / resSum;
 				const desiredPercentage = categorySplit[element] / healthSum;
 				const percentageDelta = desiredPercentage - currPercentage;
@@ -154,15 +162,22 @@
 				let newDiv = document.createElement('div');
 				newDiv.className = "subAttribute";
 				let msg = "";
+				let subinfo = "";
 				if (percentageDelta < -0.05) {
 					msg = "You can eat <b>less</b> of <b>" + element + ".</b></p>";
+					subinfo = "Foods: " + healthData[element].foods.join(", ");
 				} else if (percentageDelta <= 0.05) {
 					msg = "You are eating the <b>right amount</b> of <b>" + element + "!</b></p>";
+					subinfo = "Foods: " + healthData[element].foods.join(", ");
 				} else {
 					msg = "You should eat <b>more</b> of <b>" + element + ".</b></p>";
+					subinfo = "Foods: " + healthData[element].foods.join(", ");
 				}
 
-				newDiv.innerHTML = "<p class='text'>"+ msg + "</p>";
+				newDiv.innerHTML = "<p class='text'>" + msg + "</p>";
+				if (subinfo !== "") {
+					newDiv.innerHTML += "<p class='subtext'>" + subinfo + "</p>";
+				}
 				healthHeader.appendChild(newDiv);
 			}
 
