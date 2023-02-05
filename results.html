@@ -79,8 +79,21 @@
 			float: left;
 		}
 
-		.clearfloat {
-			clear: all;
+
+
+		#left {
+			display: flex;
+			flex-direction: column;
+		}
+
+		#mainContainer {
+			display: flex;
+			flex-direction: row;
+			justify-content: space-evenly;
+		}
+
+		h2 {
+			right: 65%;
 		}
 	</style>
 </head>
@@ -92,21 +105,29 @@
 	<h1 id="resultsTitle">
 		Results
 	</h1>
-	<img id="userImg" src="" alt="user uploaded image">
-	<div class="clearfloat"></div>
+	<div id="mainContainer">
 
-	<div>
-		<h2>Top 5 Attributes:</h2>
-		<div id="attributes">
-			<!-- <div class = "attribute">
-				<p>Example</p>
-			</div> -->
+
+		<div id="left">
+			<img id="userImg" src="" alt="user uploaded image">
+			<button id="healthBtn"></button>
 		</div>
 
-		<div>
-			<h2 class="healthHeader">Your health summary:</h2>
-			<div id="healthAttributes">
 
+
+		<div id="right">
+			<h2>Top 5 Attributes:</h2>
+			<div id="attributes">
+				<!-- <div class = "attribute">
+				<p>Example</p>
+			</div> -->
+			</div>
+
+			<div>
+				<h2 class="healthHeader">Your health summary:</h2>
+				<div id="healthAttributes">
+
+				</div>
 			</div>
 		</div>
 	</div>
@@ -122,6 +143,7 @@
 		document.getElementById("userImg").src = "data:image/png;base64," + encoded;
 		let attributes = document.getElementById('attributes');
 		let healthHeader = document.getElementById('healthAttributes');
+		let healthBtn = document.getElementById('healthBtn');
 
 
 		get(encoded).then(res => {
@@ -144,6 +166,7 @@
 				resSum += healthData[element].total;
 
 			}
+			let totalPercentage = 0;
 
 			for (const element in categorySplit) {
 				if (healthData[element] === undefined) {
@@ -167,6 +190,12 @@
 				newDiv.className = "subAttribute";
 				let msg = "";
 				let subinfo = "";
+				
+
+				// q: how to get absolute value in js?
+
+				totalPercentage += Math.abs(percentageDelta);
+
 				if (percentageDelta < -0.05) {
 					msg = "You can eat <b>less</b> of <b>" + element + ".</b></p>";
 					subinfo = "Foods: " + healthData[element].foods.join(", ");
@@ -191,6 +220,7 @@
 				newDiv.innerHTML = "<p class='text'>" + element + "</p>";
 				attributes.appendChild(newDiv);
 			});
+			healthBtn.textContent = "Your Health Score is: " + (1.2 - totalPercentage).toFixed(2);
 		})
 	</script>
 </body>

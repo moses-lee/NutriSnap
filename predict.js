@@ -52,21 +52,20 @@ function getHealthData(foodRes) {
   const results = {};
   for (let i = 0; i < foodRes.length; i++) {
     const food = foodRes[i];
-   
+
     for (const category in foods) {
-    
       if (foods[category].includes(food)) {
         if (category in results) {
           results[category].total += 1;
           results[category].foods.push(food);
         } else {
-          results[category] = {}
+          results[category] = {};
           results[category].total = 1;
           results[category].foods = [food];
         }
       }
     }
   }
- 
+
   return results;
 }
