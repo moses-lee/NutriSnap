@@ -50,7 +50,7 @@
         <div id="uploadBox">
             <input id = "input" type="file" name="fileUpload">Upload Image</input>
         </div>
-
+        <script src="key.js"></script>
         <script src="predict.js"></script>
         <script>
             // When the user uploads a file, save it in "picture". 
@@ -59,6 +59,7 @@
             function handleFiles() {
                 const picture = this.files[0];
                 console.log(document.getElementById('input').value); // DEBUG - print name of file
+                get("hello"); // TODO - definte getbase64
             }
         </script>
     </body>
