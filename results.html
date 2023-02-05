@@ -25,14 +25,20 @@
 	<p>
 		Filler stuff filler stuff filler words.
 		Yea yea yea. 
+		assume content here
 	</p>
     <script src="key.js"></script>
     <script src="predict.js"></script>
-	<string>
-		localStorage.getItem("encoded64", encoded);
+	<script>
+		var encoded = localStorage.getItem("encoded64");
+		var test = localStorage.getItem("test");
+		
+		console.log(test);
+		console.log(encoded);
+
 		get(encoded).then(res => {
 			console.log(res.outputs[0].data.concepts);
 		})
-	</string>
+	</script>
 </body>
 </html>
