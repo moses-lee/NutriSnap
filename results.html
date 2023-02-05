@@ -7,6 +7,12 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>NutriSnap Results</title>
 	<style>
+		h2{
+			padding-left: 400px;
+			padding-top: 50px;
+			position: relative;
+		}
+
 		body {
 			background-image: url("img/Results.png");
 			background-repeat: no-repeat;
@@ -18,6 +24,43 @@
 			font-size: 80px;
 			font-weight: 200;
 		}
+
+		#attributes{
+			display: flex;
+			flex-wrap: wrap;	
+			margin-top: 20px;
+			margin-right: 50px;
+			justify-content: space-evenly;
+		}
+
+		.text{
+			padding-top: 23px;
+			font-size: medium;
+		}
+
+		.attribute{
+			/* background-color: #749C75; */
+			background-color: #006202;
+			color:	white;
+			text-align: center;
+			vertical-align: middle;
+			border-radius: 25px;
+			width: 100px;
+			height: 100px;
+		}
+
+		#userImg{
+			width:300px;
+			height: 300px;
+			overflow: hidden;
+			object-fit: cover;
+			margin: 50px;
+			float: left;
+		}
+
+		.clearfloat{
+			clear: all;
+		}
 	</style>
 </head>
 
@@ -25,19 +68,51 @@
 	<h1 id="resultsTitle">
 		Results
 	</h1>
-	<p>
-		Filler stuff filler stuff filler words.
-		Yea yea yea.
-		assume content here
-	</p>
+	<img id = "userImg" src = "" alt = "user uploaded image">
+	<div class="clearfloat"></div>
+
+	<div>
+		<h2>Top 5 Attributes:</h2>
+		<div id="attributes">
+			<!-- <div class = "attribute">
+				<p>Example</p>
+			</div> -->
+		</div>
+
+		<div>
+			<h2 class = "goodHeader">The good</h2>
+		</div>
+
+		<div>
+			<h2 class = "badHeader">Improvements</h2>
+		</div>
+	</div>
+
+
 	<script src="key.js"></script>
 	<script src="health.js"></script>
 	<script src="predict.js"></script>
 	<script>
 		var encoded = localStorage.getItem("encoded64");
+		var test = localStorage.getItem("test");
+
+
+		// Show user image on page
+		document.getElementById("userImg").src = "data:image/png;base64," + encoded;
+
+		console.log(test);
+		console.log(encoded);
+		let attributes = document.getElementById('attributes');
+
 		get(encoded).then(res => {
-			res.outputs[0].data.concepts.slice(0, 10).forEach(element => {
+			res.outputs[0].data.concepts.slice(0, 5).forEach(element => {
 				console.log(element.name);
+
+				// Create on-screen images for each concept slice
+				let newDiv = document.createElement('div');
+				newDiv.className = "attribute";
+				newDiv.innerHTML = "<p class='text'>" + element.name + "</p>";
+				attributes.appendChild(newDiv);
 			});
 		})
 	</script>
