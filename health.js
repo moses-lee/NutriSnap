@@ -24,7 +24,7 @@ const foods = {
     "mushrooms",
     "zucchini",
     "corn",
-    "salad"
+    "salad",
   ],
   fruits: [
     "apples",
@@ -47,9 +47,9 @@ const foods = {
     "quinoa",
     "beans",
     "black beans",
+    "chips",
   ],
   snacks: [
-    "chips",
     "candy",
     "cookies",
     "sugar",
@@ -66,9 +66,9 @@ const foods = {
 
 const categorySplit = {
   meat: 2,
-  vegetables:3, 
+  vegetables: 3,
   fruits: 3,
   dairy: 2,
   grains: 2,
-  snacks: 1
+  snacks: 1,
 };
