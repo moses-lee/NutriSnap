@@ -7,7 +7,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>NutriSnap Results</title>
 	<style>
-		h2{
+		h2 {
 			padding-left: 400px;
 			padding-top: 50px;
 			position: relative;
@@ -25,23 +25,40 @@
 			font-weight: 200;
 		}
 
-		#attributes{
+		#attributes {
 			display: flex;
-			flex-wrap: wrap;	
+			flex-wrap: wrap;
 			margin-top: 20px;
 			margin-right: 50px;
 			justify-content: space-evenly;
 		}
 
-		.text{
+
+		#healthAttributes {
+			display: flex;
+			flex-wrap: wrap;
+			margin-top: 20px;
+			margin-right: 50px;
+			justify-content: space-evenly;
+			flex-direction: column;
+		}
+
+
+		.text {
 			padding-top: 23px;
 			font-size: medium;
 		}
 
-		.attribute{
+		.subAttribute {
+			/* background-color: #749C75; */
+			border-radius: 25px;
+			width: 100%;
+		}
+
+		.attribute {
 			/* background-color: #749C75; */
 			background-color: #006202;
-			color:	white;
+			color: white;
 			text-align: center;
 			vertical-align: middle;
 			border-radius: 25px;
@@ -49,8 +66,8 @@
 			height: 100px;
 		}
 
-		#userImg{
-			width:300px;
+		#userImg {
+			width: 300px;
 			height: 300px;
 			overflow: hidden;
 			object-fit: cover;
@@ -58,7 +75,7 @@
 			float: left;
 		}
 
-		.clearfloat{
+		.clearfloat {
 			clear: all;
 		}
 	</style>
@@ -68,7 +85,7 @@
 	<h1 id="resultsTitle">
 		Results
 	</h1>
-	<img id = "userImg" src = "" alt = "user uploaded image">
+	<img id="userImg" src="" alt="user uploaded image">
 	<div class="clearfloat"></div>
 
 	<div>
@@ -80,11 +97,10 @@
 		</div>
 
 		<div>
-			<h2 class = "goodHeader">The good</h2>
-		</div>
+			<h2 class="healthHeader">Your health summary:</h2>
+			<div id="healthAttributes">
 
-		<div>
-			<h2 class = "badHeader">Improvements</h2>
+			</div>
 		</div>
 	</div>
 
@@ -94,24 +110,59 @@
 	<script src="predict.js"></script>
 	<script>
 		var encoded = localStorage.getItem("encoded64");
-		var test = localStorage.getItem("test");
-
 
 		// Show user image on page
 		document.getElementById("userImg").src = "data:image/png;base64," + encoded;
-
-		console.log(test);
-		console.log(encoded);
 		let attributes = document.getElementById('attributes');
+		let healthHeader = document.getElementById('healthAttributes');
+
 
 		get(encoded).then(res => {
-			res.outputs[0].data.concepts.slice(0, 5).forEach(element => {
-				console.log(element.name);
 
-				// Create on-screen images for each concept slice
+			const foodList = res.outputs[0].data.concepts.map(a => a.name);
+			console.log(foodList)
+
+			const finalResList = {};
+
+			const healthData = getHealthData(foodList);
+			console.log(healthData);
+
+			let healthSum = 0;
+			for (const element in categorySplit) {
+				healthSum += categorySplit[element];
+			}
+
+			let resSum = 0;
+			for (const element in healthData) {
+				resSum += healthData[element].total;
+
+			}
+
+			for (const element in healthData) {
+				const currPercentage = healthData[element].total / resSum;
+				const desiredPercentage = categorySplit[element] / healthSum;
+				const percentageDelta = desiredPercentage - currPercentage;
+				console.log(`element: ${element} currPercentage: ${currPercentage}, desiredPercentage: ${desiredPercentage}, delta: ${percentageDelta}`);
+
+				let newDiv = document.createElement('div');
+				newDiv.className = "subAttribute";
+				let msg = "";
+				if (percentageDelta < -0.05) {
+					msg = "You can eat <b>less</b> of <b>" + element + ".</b></p>";
+				} else if (percentageDelta <= 0.05) {
+					msg = "You are eating the <b>right amount</b> of <b>" + element + "!</b></p>";
+				} else {
+					msg = "You should eat <b>more</b> of <b>" + element + ".</b></p>";
+				}
+
+				newDiv.innerHTML = "<p class='text'>"+ msg + "</p>";
+				healthHeader.appendChild(newDiv);
+			}
+
+			foodList.slice(0, 5).forEach(element => {
 				let newDiv = document.createElement('div');
 				newDiv.className = "attribute";
-				newDiv.innerHTML = "<p class='text'>" + element.name + "</p>";
+				newDiv.innerHTML = "<p class='text'>" + element + "</p>";
 				attributes.appendChild(newDiv);
 			});
 		})
