@@ -53,13 +53,25 @@
         <script src="key.js"></script>
         <script src="predict.js"></script>
         <script>
+            function getBase64(file) {
+                var reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = function () {
+                    console.log(reader.result);
+                };
+                reader.onerror = function (error) {
+                    console.log('Error: ', error);
+                };
+            }
+
             // When the user uploads a file, save it in "picture". 
             const inputElement = document.getElementById("input");
             inputElement.addEventListener("change", handleFiles, false);
             function handleFiles() {
                 const picture = this.files[0];
                 console.log(document.getElementById('input').value); // DEBUG - print name of file
-                get("hello"); // TODO - definte getbase64
+                console.log(getBase64(picture)); //DEBUG - print base 64 version of file
+                get("hello");
             }
         </script>
     </body>
