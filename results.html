@@ -34,11 +34,6 @@
 	<script src="predict.js"></script>
 	<script>
 		var encoded = localStorage.getItem("encoded64");
-		var test = localStorage.getItem("test");
-
-		console.log(test);
-		console.log(encoded);
-
 		get(encoded).then(res => {
 			res.outputs[0].data.concepts.slice(0, 10).forEach(element => {
 				console.log(element.name);
