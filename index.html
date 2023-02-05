@@ -1,78 +1,89 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <link rel="stylesheet" href="main.css">
-        <link rel="script" href="main.css">
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>NutriSnap</title>
-        <style>
-            *{
-                margin: none;
-                padding: none;
-            }
-            body {
-                background-image: url("img/mainBackground.png");
-                background-repeat: no-repeat;
-                background-size: cover;
-            }
-            #title {
-                margin: 300px 0px 0px 100px;
-                font-size: 80px;
-                font-weight: 200;
-            }
-            p {
-                margin: 30px 0px 0px 100px;
-                font-size: 25px;
-            }
-            #uploadButton {
-                text-align: center;
-                margin-top: 250px;
-                text-align: center;
-                box-shadow: none;
-                background-color: #EEE9E5;
-            }
-            #uploadBox {
-                margin-left: auto;
-                margin-right: auto;
-                text-align: center;
-            }
-        </style>
-    </head>
-    
-    <body>
-        <h1 id="title">
-            NutriSnap
-        </h1>
-        <p>
-            Snap a pic of your food!
-        </p>
-        <div id="uploadBox">
-            <input id = "input" type="file" name="fileUpload">Upload Image</input>
-        </div>
-        <script src="key.js"></script>
-        <script src="predict.js"></script>
-        <script>
-            function getBase64(file) {
-                var reader = new FileReader();
-                reader.readAsDataURL(file);
-                reader.onload = function () {
-                    console.log(reader.result);
-                };
-                reader.onerror = function (error) {
-                    console.log('Error: ', error);
-                };
-            }
 
-            // When the user uploads a file, save it in "picture". 
-            const inputElement = document.getElementById("input");
-            inputElement.addEventListener("change", handleFiles, false);
-            function handleFiles() {
-                const picture = this.files[0];
-                console.log(document.getElementById('input').value); // DEBUG - print name of file
-                console.log(getBase64(picture)); //DEBUG - print base 64 version of file
-                get("hello");
-            }
-        </script>
-    </body>
+<head>
+    <link rel="stylesheet" href="main.css">
+    <link rel="script" href="main.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>NutriSnap</title>
+    <style>
+        * {
+            margin: none;
+            padding: none;
+        }
+
+        body {
+            background-image: url("img/mainBackground.png");
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        #title {
+            margin: 300px 0px 0px 100px;
+            font-size: 80px;
+            font-weight: 200;
+        }
+
+        p {
+            margin: 30px 0px 0px 100px;
+            font-size: 25px;
+        }
+
+        #uploadButton {
+            text-align: center;
+            margin-top: 250px;
+            text-align: center;
+            box-shadow: none;
+            background-color: #EEE9E5;
+        }
+
+        #uploadBox {
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <h1 id="title">
+        NutriSnap
+    </h1>
+    <p>
+        Snap a pic of your food!
+    </p>
+    <div id="uploadBox">
+        <input id="input" type="file" name="fileUpload">Upload Image</input>
+    </div>
+    <script src="key.js"></script>
+    <script src="predict.js"></script>
+    <script>
+
+
+        // When the user uploads a file, save it in "picture". 
+        const inputElement = document.getElementById("input");
+        inputElement.addEventListener("change", handleFiles, false);
+        function handleFiles() {
+            const picture = this.files[0];
+
+            var reader = new FileReader();
+            reader.readAsDataURL(picture);
+            return reader.onload = function () {
+                let encoded = reader.result.toString().replace(/^data:(.*,)?/, '');
+                if ((encoded.length % 4) > 0) {
+                    encoded += '='.repeat(4 - (encoded.length % 4));
+                }
+
+                get(encoded).then(res => {
+                    console.log(res.outputs[0].data.concepts);
+                })
+            };
+            return reader.onerror = function (error) {
+                console.log('Error: ', error);
+            };
+        }
+    </script>
+</body>
+
 </html>
